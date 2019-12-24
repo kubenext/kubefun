@@ -42,6 +42,8 @@ func main() {
 			version()
 		case "release":
 			release()
+		case "docker":
+			docker()
 		default:
 			log.Fatalf("Unknown command %q", cmd)
 		}
@@ -102,6 +104,15 @@ func version() {
 func release() {
 	runCmd("git", nil, "tag", "-a", VERSION, "-m", fmt.Sprintf("\"Release %s\"", VERSION))
 	runCmd("git", nil, "push", "--follow-tags")
+}
+
+func docker() {
+	dockerVars := map[string]string{
+		"CGO_ENABLED": "0",
+		"GOOS":        "linux",
+		"GOARCH":      "amd64",
+	}
+	runCmd("go", dockerVars, "build", "-o", "kf", GO_FLAGS, "-v", "./cmd/main/main.go")
 }
 
 func removeFakes() {
