@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	VERSION = "v0.0.1"
-	GOPATH = os.Getenv("GOPATH")
+	VERSION    = "v0.0.1"
+	GOPATH     = os.Getenv("GOPATH")
 	GIT_COMMIT = gitCommit()
 	BUILD_TIME = time.Now().UTC().Format(time.RFC3339)
-	LD_FLAGS = fmt.Sprintf("-X main.version=%s -X main.buildTime=%s -X main.gitCommit=%s", VERSION, BUILD_TIME, GIT_COMMIT)
-	GO_FLAGS = fmt.Sprintf("-ldflags=%s", LD_FLAGS)
+	LD_FLAGS   = fmt.Sprintf("-X main.version=%s -X main.buildTime=%s -X main.gitCommit=%s", VERSION, BUILD_TIME, GIT_COMMIT)
+	GO_FLAGS   = fmt.Sprintf("-ldflags=%s", LD_FLAGS)
 )
 
 func main() {
@@ -40,6 +40,8 @@ func main() {
 			vet()
 		case "version":
 			version()
+		case "release":
+			release()
 		default:
 			log.Fatalf("Unknown command %q", cmd)
 		}
@@ -102,7 +104,6 @@ func release() {
 	runCmd("git", nil, "push", "--follow-tags")
 }
 
-
 func removeFakes() {
 	checkDirs := []string{"pkg", "internal"}
 	fakePaths := []string{}
@@ -138,7 +139,7 @@ func gitCommit() string {
 	return fmt.Sprintf("%s", out)
 }
 
-func runCmd(command string, env map[string]string, args ...string)  {
+func runCmd(command string, env map[string]string, args ...string) {
 	cmd := newCmd(command, env, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -162,5 +163,3 @@ func newCmd(command string, env map[string]string, args ...string) *exec.Cmd {
 	}
 	return cmd
 }
-
-
