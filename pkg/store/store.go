@@ -2,13 +2,19 @@ package store
 
 import (
 	"context"
+	"fmt"
+	"github.com/kubenext/kubefun/internal/cluster"
+	"github.com/kubenext/kubefun/pkg/action"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/tools/cache"
+	"strings"
 )
 
-// TODO store for pkg
+//go:generate mockgen  -destination=./fake/mock_store.go -package=fake github.com/kubenext/kubefun/pkg/store Store
 
 type Key struct {
 	Namespace  string
@@ -25,9 +31,116 @@ type Store interface {
 	Delete(ctx context.Context, key Key) error
 	Watch(ctx context.Context, key Key, handler cache.ResourceEventHandler) error
 	Unwatch(ctx context.Context, groupVersionKinds ...schema.GroupVersionKind) error
-	//UpdateClusterClient(ctx context.Context, client cluster.ClientInterface) error
+	UpdateClusterClient(ctx context.Context, client cluster.ClientInterface) error
 	RegisterOnUpdate(fn UpdateFn)
 	IsLoading(ctx context.Context, key Key) bool
 }
 
 type UpdateFn func(store Store)
+
+func (k Key) String() string {
+	var sb strings.Builder
+	sb.WriteString("CacheKey[")
+	if k.Namespace != "" {
+		sb.WriteString(fmt.Sprintf("Namespace='%s', ", k.Namespace))
+	}
+	sb.WriteString(fmt.Sprintf("APIVersion='%s', ", k.APIVersion))
+	sb.WriteString(fmt.Sprintf("Kind='%s'", k.Kind))
+
+	if k.Name != "" {
+		sb.WriteString(fmt.Sprintf(", Name='%s'", k.Name))
+	}
+
+	if k.Selector != nil && k.Selector.String() != "" {
+		sb.WriteString(fmt.Sprintf(", Selector='%s'", k.Selector.String()))
+	}
+
+	sb.WriteString("]")
+	return sb.String()
+}
+
+// GroupVersionKind converts the Key to a GroupVersionKind.
+func (k Key) GroupVersionKind() schema.GroupVersionKind {
+	return schema.FromAPIVersionAndKind(k.APIVersion, k.Kind)
+}
+
+// ToActionPayload converts the Key to a payload.
+func (k Key) ToActionPayload() action.Payload {
+	return action.Payload{
+		"namespace":  k.Namespace,
+		"apiVersion": k.APIVersion,
+		"kind":       k.Kind,
+		"name":       k.Name,
+	}
+}
+
+// KeyFromPayload converts a payload into a Key.
+func KeyFromPayload(payload action.Payload) (Key, error) {
+	namespace, err := payload.OptionalString("namespace")
+	if err != nil {
+		return Key{}, err
+	}
+	apiVersion, err := payload.String("apiVersion")
+	if err != nil {
+		return Key{}, err
+	}
+	kind, err := payload.String("kind")
+	if err != nil {
+		return Key{}, err
+	}
+	name, err := payload.String("name")
+	if err != nil {
+		return Key{}, err
+	}
+	key := Key{
+		Namespace:  namespace,
+		APIVersion: apiVersion,
+		Kind:       kind,
+		Name:       name,
+	}
+
+	return key, nil
+}
+
+// KeyFromObject creates a key from a runtime object.
+func KeyFromObject(object runtime.Object) (Key, error) {
+	accessor := meta.NewAccessor()
+
+	namespace, err := accessor.Namespace(object)
+	if err != nil {
+		return Key{}, err
+	}
+
+	apiVersion, err := accessor.APIVersion(object)
+	if err != nil {
+		return Key{}, err
+	}
+
+	kind, err := accessor.Kind(object)
+	if err != nil {
+		return Key{}, err
+	}
+
+	name, err := accessor.Name(object)
+	if err != nil {
+		return Key{}, err
+	}
+
+	return Key{
+		Namespace:  namespace,
+		APIVersion: apiVersion,
+		Kind:       kind,
+		Name:       name,
+	}, nil
+
+}
+
+// KeyFromGroupVersionKind creates a key from a group version kind.
+func KeyFromGroupVersionKind(groupVersionKind schema.GroupVersionKind) Key {
+	apiVersion, kind := groupVersionKind.ToAPIVersionAndKind()
+
+	return Key{
+		APIVersion: apiVersion,
+		Kind:       kind,
+	}
+}
