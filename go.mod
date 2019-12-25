@@ -3,6 +3,7 @@ module github.com/kubenext/kubefun
 go 1.13
 
 require (
+	github.com/GeertJohan/go.rice v1.0.0
 	github.com/golang/mock v1.3.1
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.4.0
