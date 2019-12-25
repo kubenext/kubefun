@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "type": "selectors",
+    "title": [
+      {
+        "config": { "value": "my summary" },
+        "metadata": { "type": "text" }
+      }
+    ]
+  },
+  "config": {
+    "selectors": [
+      {
+        "metadata": {
+          "type": "labelSelector"
+        },
+        "config": {
+          "key": "app",
+          "value": "nginx"
+        }
+      },
+      {
+        "metadata": {
+          "type": "expressionSelector"
+        },
+        "config": {
+          "key": "environment",
+          "operator": "In",
+          "values": [
+            "production",
+            "qa"
+          ]
+        }
+      }
+    ]
+  }
+}

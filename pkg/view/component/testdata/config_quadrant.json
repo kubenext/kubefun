@@ -1,0 +1,6 @@
+{
+  "NW": { "label": "nw", "value": "1"},
+  "NE": { "label": "ne", "value": "1"},
+  "SW": { "label": "sw", "value": "1"},
+  "SE": { "label": "se", "value": "1"}
+}

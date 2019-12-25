@@ -1,0 +1,61 @@
+{
+  "sections": [
+    {
+      "header": "Containers",
+      "content": {
+        "metadata": {
+          "type": "list",
+          "title": [
+            {
+              "config": { "value": "nginx" },
+              "metadata": { "type": "text" }
+            }
+          ]
+        },
+        "config": {
+          "items": [
+            {
+              "metadata": {
+                "type": "text",
+                "title": [
+                  {
+                    "config": { "value": "Image" },
+                    "metadata": { "type": "text" }
+                  }
+                ]
+              },
+              "config": {
+                "value": "nginx:latest"
+              }
+            },
+            {
+              "metadata": {
+                "type": "text",
+                "title": [
+                  {
+                    "config": { "value": "Port" },
+                    "metadata": { "type": "text" }
+                  }
+                ]
+              },
+              "config": {
+                "value": "80/TCP"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "header": "Empty Section",
+      "content": {
+        "metadata": {
+          "type": "text"
+        },
+        "config": {
+          "value": "Nothing to see here"
+        }
+      }
+    }
+  ]
+}
