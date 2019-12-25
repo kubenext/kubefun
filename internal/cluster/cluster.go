@@ -23,6 +23,7 @@ import (
 	"time"
 
 	// auth plugins
+	_ "k8s.io/client-go/informers"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/azure"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
@@ -75,7 +76,6 @@ var _ ClientInterface = (*Cluster)(nil)
 
 func newCluster(ctx context.Context, clientConfig clientcmd.ClientConfig, restClient *rest.Config, defaultNamespace string) (*Cluster, error) {
 	logger := log.From(ctx).With("component", "cluster client")
-
 	kubernetesClient, err := kubernetes.NewForConfig(restClient)
 	if err != nil {
 		return nil, errors.Wrap(err, "create kubernetes client")
