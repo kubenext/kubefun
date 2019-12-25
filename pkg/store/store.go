@@ -8,6 +8,8 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
+// TODO store for pkg
+
 type Key struct {
 	Namespace  string
 	APIVersion string
