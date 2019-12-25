@@ -20,6 +20,8 @@ var (
 	GO_FLAGS   = fmt.Sprintf("-ldflags=%s", LD_FLAGS)
 )
 
+// TODO web build
+
 func main() {
 	flag.Parse()
 	for _, cmd := range flag.Args() {
