@@ -33,6 +33,7 @@ type Store interface {
 	Unwatch(ctx context.Context, groupVersionKinds ...schema.GroupVersionKind) error
 	UpdateClusterClient(ctx context.Context, client cluster.ClientInterface) error
 	RegisterOnUpdate(fn UpdateFn)
+	Update(ctx context.Context, key Key, updater func(*unstructured.Unstructured) error) error
 	IsLoading(ctx context.Context, key Key) bool
 }
 

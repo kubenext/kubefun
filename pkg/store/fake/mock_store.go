@@ -129,6 +129,20 @@ func (mr *MockStoreMockRecorder) Unwatch(arg0 interface{}, arg1 ...interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Unwatch", reflect.TypeOf((*MockStore)(nil).Unwatch), varargs...)
 }
 
+// Update mocks base method
+func (m *MockStore) Update(arg0 context.Context, arg1 store.Key, arg2 func(*unstructured.Unstructured) error) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Update indicates an expected call of Update
+func (mr *MockStoreMockRecorder) Update(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockStore)(nil).Update), arg0, arg1, arg2)
+}
+
 // UpdateClusterClient mocks base method
 func (m *MockStore) UpdateClusterClient(arg0 context.Context, arg1 cluster.ClientInterface) error {
 	m.ctrl.T.Helper()
