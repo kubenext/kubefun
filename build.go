@@ -8,11 +8,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"sync"
 	"time"
 )
 
 var (
-	VERSION    = "v0.0.2"
+	VERSION    = "v0.0.3"
 	GOPATH     = os.Getenv("GOPATH")
 	GIT_COMMIT = gitCommit()
 	BUILD_TIME = time.Now().UTC().Format(time.RFC3339)
@@ -26,6 +27,33 @@ func main() {
 	flag.Parse()
 	for _, cmd := range flag.Args() {
 		switch cmd {
+		case "ci":
+			test()
+			vet()
+			webDeps()
+			webTest()
+			webBuild()
+			build()
+		case "ci-quick":
+			webDeps()
+			webBuild()
+			build()
+		case "web-deps":
+			webDeps()
+		case "web-test":
+			webDeps()
+			webTest()
+		case "web-build":
+			webDeps()
+			webBuild()
+		case "web":
+			webDeps()
+			webTest()
+			webBuild()
+		case "serve":
+			serve()
+		case "install-test-plugin":
+			installTestPlugin()
 		case "go-install":
 			goInstall()
 		case "clean":
@@ -97,6 +125,94 @@ func test() {
 
 func vet() {
 	runCmd("go", nil, "vet", "./internal/...", "./pkg/...")
+}
+
+func webDeps() {
+	cmd := newCmd("npm", nil, "ci")
+	cmd.Stdout = os.Stdout
+	cmd.Dir = "./web"
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("web-deps: %s", err)
+	}
+}
+
+func webTest() {
+	cmd := newCmd("npm", nil, "run", "test:headless")
+	cmd.Stdout = os.Stdout
+	cmd.Dir = "./web"
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("web-test: %s", err)
+	}
+}
+
+func webBuild() {
+	cmd := newCmd("npm", nil, "run", "build")
+	cmd.Stdout = os.Stdout
+	cmd.Dir = "./web"
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("web-build: %s", err)
+	}
+	runCmd("go", nil, "generate", "./web")
+}
+
+func serve() {
+	var wg sync.WaitGroup
+
+	uiVars := map[string]string{"API_BASE": "http://localhost:7777"}
+	uiCmd := newCmd("npm", uiVars, "run", "start")
+	uiCmd.Stdout = os.Stdout
+	uiCmd.Dir = "./web"
+	if err := uiCmd.Start(); err != nil {
+		log.Fatalf("uiCmd: start: %s", err)
+	}
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := uiCmd.Wait(); err != nil {
+			log.Fatalf("serve: npm run: %s", err)
+		}
+	}()
+
+	serverVars := map[string]string{
+		"KUBEFUN_DISABLE_OPEN_BROWSER": "true",
+		"KUBEFUN_LISTENER_ADDR":        "localhost:7777",
+		"KUBEFUN_PROXY_FRONTEND":       "http://localhost:4200",
+	}
+	serverCmd := newCmd("go", serverVars, "run", "./cmd/kubefun/main.go")
+	serverCmd.Stdout = os.Stdout
+	if err := serverCmd.Start(); err != nil {
+		log.Fatalf("serveCmd: start: %s", err)
+	}
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := serverCmd.Wait(); err != nil {
+			log.Fatalf("serve: go run: %s", err)
+		}
+	}()
+
+	wg.Wait()
+}
+
+func installTestPlugin() {
+	dir := pluginDir()
+	log.Printf("Plugin path: %s", dir)
+	os.MkdirAll(dir, 0755)
+	pluginFile := fmt.Sprintf("%s/kubefun-sample-plugin", dir)
+	runCmd("go", nil, "build", "-o", pluginFile, "github.com/kubenext/kubefun/cmd/kubefun-sample-plugin")
+}
+
+func pluginDir() string {
+	xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
+	if xdgConfigHome != "" {
+		return filepath.Join(xdgConfigHome, "kubefun", "plugins")
+	} else if runtime.GOOS == "windows" {
+		return filepath.Join(os.Getenv("LOCALAPPDATA"), "kubefun", "plugins")
+	} else {
+		return filepath.Join(os.Getenv("HOME"), ".config", "kubefun", "plugins")
+	}
 }
 
 func version() {
