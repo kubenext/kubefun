@@ -128,7 +128,7 @@ func vet() {
 }
 
 func webDeps() {
-	cmd := newCmd("npm", nil, "ci")
+	cmd := newCmd("npm", nil, "i")
 	cmd.Stdout = os.Stdout
 	cmd.Dir = "./web"
 	if err := cmd.Run(); err != nil {
@@ -179,7 +179,7 @@ func serve() {
 		"KUBEFUN_LISTENER_ADDR":        "localhost:7777",
 		"KUBEFUN_PROXY_FRONTEND":       "http://localhost:4200",
 	}
-	serverCmd := newCmd("go", serverVars, "run", "./cmd/kubefun/main.go")
+	serverCmd := newCmd("go", serverVars, "run", "./cmd/main/main.go")
 	serverCmd.Stdout = os.Stdout
 	if err := serverCmd.Start(); err != nil {
 		log.Fatalf("serveCmd: start: %s", err)
