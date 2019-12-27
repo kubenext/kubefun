@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 the Octant contributors. All Rights Reserved.
+ * Copyright (c) 2019 the Kubefun contributors. All Rights Reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -83,7 +83,7 @@ export class WebsocketService implements BackendService {
             tap(_ => {
               const id = this.notifierSession.pushSignal(
                 NotifierSignalType.ERROR,
-                'Lost connection to Octant service. Retrying...'
+                'Lost connection to Kubefun service. Retrying...'
               );
               this.connectSignalID.next(id);
             }),

@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 the Octant contributors. All Rights Reserved.
+/* Copyright (c) 2019 the Kubefun contributors. All Rights Reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -11,7 +11,7 @@
     --dropdownOption-bg-color: white;
     --dropdownOption-font-color: black;
   }
-  
+
   // Dropdown's color variables for Dark Theme.
   :host-context(body.dark) {
     --dropdownLink-color: #49afd9;
@@ -71,6 +71,6 @@
       &.ng-select-top {
         border-bottom-color: var(--dropdownLink-color);
       }
-    } 
+    }
   }
 }

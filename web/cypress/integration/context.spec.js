@@ -4,8 +4,8 @@ describe('Context', () => {
   });
 
   it('has kubeconfig context', () => {
-    cy.contains(' octant-temporary ').click();
+    cy.contains(' kubefun-temporary ').click();
 
-    cy.get('.active').contains(' octant-temporary ');
+    cy.get('.active').contains(' kubefun-temporary ');
   });
 });

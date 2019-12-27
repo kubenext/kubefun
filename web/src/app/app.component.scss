@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 the Octant contributors. All Rights Reserved.
+/* Copyright (c) 2019 the Kubefun contributors. All Rights Reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -9,7 +9,7 @@ $navigation-width: 13rem;
     :host-context(body) {
       --navigation-border-color: rgb(215, 215, 215);
     }
-    
+
     // Navigation's color variables for Dark Theme.
     :host-context(body.dark) {
       --navigation-border-color: #0e161b;

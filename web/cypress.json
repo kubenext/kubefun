@@ -5,6 +5,6 @@
   "viewportWidth": 1440,
   "defaultCommandTimeout": 25000,
   "env": {
-    "CYPRESS_CONTEXT": "octant-temporary"
+    "CYPRESS_CONTEXT": "kubefun-temporary"
   }
 }

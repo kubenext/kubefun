@@ -1,7 +1,7 @@
 describe('Overview page', () => {
   it('loads page', () => {
     cy.visit('/');
-    cy.title().should('include', 'Octant');
+    cy.title().should('include', 'Kubefun');
   });
 
   it('navigate to title', () => {

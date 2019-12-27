@@ -27,12 +27,12 @@ func TestContext_GenerateContexts(t *testing.T) {
 	defer controller.Finish()
 
 	state := kubefunFake.NewMockState(controller)
-	octantClient := fake.NewMockKubefunClient(controller)
+	kubefunClient := fake.NewMockKubefunClient(controller)
 
 	ev := kubefun.Event{
 		Type: "eventType",
 	}
-	octantClient.EXPECT().Send(ev)
+	kubefunClient.EXPECT().Send(ev)
 
 	logger := log.NopLogger()
 
@@ -48,5 +48,5 @@ func TestContext_GenerateContexts(t *testing.T) {
 		api.WithContextGeneratorPoll(poller))
 
 	ctx := context.Background()
-	manager.Start(ctx, state, octantClient)
+	manager.Start(ctx, state, kubefunClient)
 }

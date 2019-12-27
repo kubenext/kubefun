@@ -24,7 +24,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-var namespace = 'octant-cypress-';
+var namespace = 'kubefun-cypress-';
 var startingContext = '';
 
 before(() => {
@@ -50,7 +50,7 @@ before(() => {
       " | tail -1 | awk '{print $4}')",
     { env: { CYPRESS_CONTEXT: Cypress.env('CYPRESS_CONTEXT') } }
   );
-  // Octant is expected to start before cypress in ci
+  // Kubefun is expected to start before cypress in ci
   // Setting context here allows spec to get a namespace
   cy.exec('kubectl config use-context $CYPRESS_CONTEXT', {
     env: { CYPRESS_CONTEXT: Cypress.env('CYPRESS_CONTEXT') },

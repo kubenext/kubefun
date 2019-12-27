@@ -15,8 +15,8 @@ describe('Namespace', () => {
   it('namespace dropdown', () => {
     cy.get('input[role="combobox"]').click();
 
-    cy.contains('octant-cypress').click();
+    cy.contains('kubefun-cypress').click();
 
-    cy.location('hash').should('include', '/' + 'octant-cypress');
+    cy.location('hash').should('include', '/' + 'kubefun-cypress');
   });
 });
