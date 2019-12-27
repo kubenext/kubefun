@@ -1,0 +1,98 @@
+/* Copyright (c) 2019 the Octant contributors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+body {
+  --statusContainer-bg-color:  #eee;
+}
+body.dark {
+  --statusContainer-bg-color: #0f181c;
+}
+.resourceViewer {
+  .view-container {
+    height: 100vh;
+    width: 100%;
+    float: left;
+    overflow: auto;
+    overflow-y: hidden;
+  }
+
+  .status-container {
+    height: 100vh;
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--statusContainer-bg-color)
+  }
+
+  .node {
+    cursor: pointer;
+    fill: white;
+
+    .label {
+      fill: black;
+    }
+
+    &.selected {
+      stroke: #003d79;
+      stroke-width: 2.5px;
+    }
+
+    &-ok {
+      rect {
+        fill: #60b515;
+      }
+    }
+
+    &-warning {
+      rect {
+        fill: #f57600;
+      }
+    }
+
+    &-error {
+      rect {
+        fill: #e12200;
+      }
+    }
+  }
+
+  .edgePath {
+    path.path {
+      stroke: #003d79;
+      stroke-width: 1.5px;
+    }
+  }
+
+  .label {
+    margin: 20px 0;
+  }
+
+  .resource {
+    background-color: #fff;
+    border: 1px solid black;
+    padding: 25px 40px;
+    position: relative;
+  }
+
+  .resource-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .resource-type {
+    color: white;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  .resource-status {
+    bottom: 0;
+    height: 15px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    background-color: #eeeeee;
+  }
+}

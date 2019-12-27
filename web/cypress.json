@@ -1,0 +1,10 @@
+{
+  "baseUrl": "http://localhost:7777",
+  "projectId": "9oqomg",
+  "viewportHeight": 900,
+  "viewportWidth": 1440,
+  "defaultCommandTimeout": 25000,
+  "env": {
+    "CYPRESS_CONTEXT": "octant-temporary"
+  }
+}

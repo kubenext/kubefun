@@ -1,0 +1,17 @@
+/* Copyright (c) 2019 the Octant contributors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@mixin pill($color) {
+  background-color: transparent;
+
+  border: 1px solid $color;
+  border-radius: 4px;
+  color: $color;
+
+  font-size: 12px;
+
+  margin-bottom: 2px;
+  margin-right: 4px;
+  padding: 5px 10px;
+}

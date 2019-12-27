@@ -1,0 +1,8 @@
+/* Copyright (c) 2019 the Octant contributors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+.error-window > pre {
+  min-height: 20vh;
+  max-height: calc(100vh - 230px);
+}

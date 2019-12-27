@@ -1,0 +1,7 @@
+<ng-template [ngIf]="isAbsolute" [ngIfElse]="relative">
+    <a href="{{ ref }}">{{ value }}</a>
+</ng-template>
+
+<ng-template #relative>
+    <a [routerLink]="[ref]">{{ value }}</a>
+</ng-template>

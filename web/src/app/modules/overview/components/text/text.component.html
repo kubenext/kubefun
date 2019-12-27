@@ -1,0 +1,7 @@
+<ng-container *ngIf="!isMarkdown; else markdown">
+    {{ value }}
+</ng-container>
+
+<ng-template #markdown>
+    <div markdown ngPreserveWhitespaces [data]="value"></div>
+</ng-template>
