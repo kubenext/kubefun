@@ -3,6 +3,7 @@ package kubefun
 import (
 	"context"
 	"fmt"
+	"github.com/kubenext/kubefun/internal/objectstatus"
 	"github.com/kubenext/kubefun/pkg/store"
 	"github.com/kubenext/kubefun/pkg/view/component"
 	corev1 "k8s.io/api/core/v1"

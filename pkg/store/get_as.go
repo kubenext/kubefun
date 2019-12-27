@@ -24,7 +24,7 @@ func GetAs(ctx context.Context, o Store, key Key, as interface{}) (bool, error) 
 
 	// NOTE: (bryanl) vendored converter can't convert from int64 to float64. Watching
 	// https://github.com/kubernetes-sigs/yaml/pull/14 to see when it gets pulled into
-	// a release so Octant can switch back.
+	// a release so Kubefun can switch back.
 	if err := tuc.DefaultUnstructuredConverter.FromUnstructured(u.Object, as); err != nil {
 		return false, errors.Wrap(err, "unable to convert object to unstructured")
 	}

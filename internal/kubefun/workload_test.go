@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/golang/mock/gomock"
 	"github.com/kubenext/kubefun/internal/kubefun"
+	"github.com/kubenext/kubefun/internal/objectstatus"
 	"github.com/kubenext/kubefun/internal/testutil"
 	"github.com/kubenext/kubefun/pkg/store"
 	"github.com/kubenext/kubefun/pkg/view/component"

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/kubenext/kubefun/internal/commands"
 	"math/rand"
 	"time"
 )
@@ -16,5 +17,5 @@ func init() {
 }
 
 func main() {
-
+	commands.Execute(version, gitCommit, buildTime)
 }

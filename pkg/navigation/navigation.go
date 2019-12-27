@@ -134,7 +134,7 @@ func CustomResourceDefinitions(ctx context.Context, o store.Store) ([]*apiextv1b
 
 		// NOTE: (bryanl) vendored converter can't convert from int64 to float64. Watching
 		// https://github.com/kubernetes-sigs/yaml/pull/14 to see when it gets pulled into
-		// a release so Octant can switch back.
+		// a release so Kubefun can switch back.
 		if err := tuc.DefaultUnstructuredConverter.FromUnstructured(rawList.Items[i].Object, crd); err != nil {
 			logger.Errorf("%v", errors.Wrapf(errors.Wrapf(err, "converting unstructured object to custom resource definition"), rawList.Items[i].GetName()))
 			continue
