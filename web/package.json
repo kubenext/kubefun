@@ -43,7 +43,7 @@
     "dagre-d3": "^0.6.3",
     "decimal.js": "^10.1.1",
     "default-passive-events": "^1.0.10",
-    "highlight.js": "^9.15.6",
+    "highlight.js": "^10.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ng-terminal": "^2.2.1",
